@@ -2,7 +2,7 @@ class_name RoomData extends RefCounted
 
 const PIPE_THICKNESS = 1
 const OPENING_WIDTH = 4
-const GAP_HEIGHT = 3
+const GAP_HEIGHT = 4
 
 var room_size : Vector2i
 var barrier_tiles := []

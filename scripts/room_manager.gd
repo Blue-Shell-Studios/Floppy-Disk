@@ -4,8 +4,10 @@ signal next_level_ready(_move_offset: Vector2)
 
 const BITS = preload("uid://gbnv60og4kua")
 const ROOM = preload("uid://c3xuv3iytwkw")
+const MIN_COMPARTMENT_WIDTH = 4
 
-var new_room_size := Vector2i(22, 12)
+var level = 1
+var new_room_size := Vector2i(25, 12)
 var new_compartment_num := 3
 
 var current_room: Node2D
@@ -20,8 +22,18 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if get_tree().get_nodes_in_group("bits").size() == 0:
-		_generate_coins_inside_next_room(5)
+		_generate_coins_inside_next_room(5 + level / 3)
 		current_room.open()
+		
+		level += 1
+		
+		
+		if level % 5 == 0 and new_room_size.x < 37:
+			new_room_size.x += new_compartment_num
+			
+			if (new_room_size.x - new_compartment_num*2 - 2) / (new_compartment_num * 2) >= MIN_COMPARTMENT_WIDTH:
+				new_compartment_num += 2
+				new_room_size.x = (MIN_COMPARTMENT_WIDTH + 1) * new_compartment_num + 2
 
 func _create_room(room_size: Vector2i, compartment_num: int, is_new_room = true, has_entrance: bool = true) -> Node2D:
 	var room_scene = ROOM.instantiate()
@@ -42,13 +54,13 @@ func _generate_coins_inside_next_room(num: int) -> void:
 	var count := 0
 	while count < num:
 		var x = randi_range(1, new_room_size.x-1)
-		var y = randi_range(1, new_room_size.y-1)
+		var y = randi_range(1, new_room_size.y-2)
 		
 		var candidate = Vector2i(x,y)
 		if candidate not in next_room.data.barrier_tiles:
 			var bit = BITS.instantiate()
 			add_child(bit)
-			bit.position = (candidate as Vector2) * GameConfig.TILE_SIZE + next_room.position
+			bit.position = (candidate as Vector2) * GameConfig.TILE_SIZE + next_room.position + Vector2(GameConfig.TILE_SIZE/2, GameConfig.TILE_SIZE/2)
 			count += 1
 
 func _on_player_exit() -> void:
