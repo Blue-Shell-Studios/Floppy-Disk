@@ -43,6 +43,7 @@ animations = [{
 size = Vector2(9, 19)
 
 [node name="FloppyDisk" type="CharacterBody2D" groups=["movable", "player"]]
+scale = Vector2(2, 2)
 script = ExtResource("1_tv3j3")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

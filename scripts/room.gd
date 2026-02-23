@@ -1,61 +1,37 @@
-class_name Room extends RefCounted
+extends Node2D
 
-const PIPE_THICKNESS = 1
-const OPENING_WIDTH = 4
-const GAP_HEIGHT = 3
+signal player_exit
 
-var room_size : Vector2i
-var barrier_tiles := []
-var entrance_tiles := []
-var exit_tiles := []
+const SOURCE_ID := 0
+const BARRIER_TILE := Vector2i(7,3)
+const EXIT_TILE := Vector2i(1,2)
 
-func _init(_room_size: Vector2i, compartment_num: int, has_entrance: bool = true) -> void:
-	room_size = _room_size
+@onready var tile_map_layer: TileMapLayer = $TileMapLayer
+@onready var exit_collision: CollisionShape2D = $Exit/CollisionShape2D
+
+var data : RoomData
+
+func setup(room_size: Vector2i, compartment_num: int, has_entrance: bool = true) -> void:
+	data = RoomData.new(room_size, compartment_num, has_entrance)
+	_construct_tiles()
+
+func _construct_tiles() -> void:
+	for tile_pos in data.barrier_tiles:
+		tile_map_layer.set_cell(tile_pos, SOURCE_ID, BARRIER_TILE)
 	
-	# ceiling
-	for x in range(0, room_size.x):
-		var ceiling_tile = Vector2i(x, 0)
-		
-		@warning_ignore("integer_division")
-		if x < room_size.x/2 - OPENING_WIDTH/2 or x >= room_size.x/2 + OPENING_WIDTH/2:
-			barrier_tiles.append(ceiling_tile)
-			continue
-		
-		exit_tiles.append(ceiling_tile)
-		
-	# floor
-	for x in range(0, room_size.x):
-		var ceiling_tile = Vector2i(x, room_size.y - 1)
-		
-		@warning_ignore("integer_division")
-		if x < room_size.x/2 - OPENING_WIDTH/2 or x >= room_size.x/2 + OPENING_WIDTH/2:
-			barrier_tiles.append(ceiling_tile)
-			continue
-		
-		if has_entrance:
-			entrance_tiles.append(ceiling_tile)
-			continue
-		
-		barrier_tiles.append(ceiling_tile)
-	
-	# walls
-	for y in range(1, room_size.y-1):
-		barrier_tiles.append(Vector2i(0, y))
-		barrier_tiles.append(Vector2i(room_size.x - 1, y))
-	
-	# obstacle aka pipe
-	if compartment_num == 1:
-		return
-	
-	var pipe_num = compartment_num - 1
-	@warning_ignore("integer_division")
-	var compartment_width = (room_size.x - pipe_num*PIPE_THICKNESS - 2) / compartment_num
-	for i in range(pipe_num):
-		var x = 1 + compartment_width + i*(compartment_width + PIPE_THICKNESS)
-		var gap_pos = randi_range(1, room_size.y - GAP_HEIGHT - 1)
-		
-		for y in range(1, gap_pos):
-			barrier_tiles.append(Vector2i(x,y))
-		
-		for y in range(gap_pos+GAP_HEIGHT, room_size.y-1):
-			barrier_tiles.append(Vector2i(x,y))
+	for tile_pos in data.exit_tiles:
+		tile_map_layer.set_cell(tile_pos, SOURCE_ID, EXIT_TILE)
+
+func open() -> void:
+	exit_collision.disabled = false
+	for tile_pos in data.exit_tiles:
+		tile_map_layer.erase_cell(tile_pos)
+
+func close() -> void:
+	for tile_pos in data.entrance_tiles:
+		tile_map_layer.set_cell(tile_pos, SOURCE_ID, BARRIER_TILE)
+
+func _on_exit_body_exited(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		player_exit.emit()
+		queue_free()

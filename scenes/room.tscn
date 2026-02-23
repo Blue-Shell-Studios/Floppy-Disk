@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://c3xuv3iytwkw"]
 
 [ext_resource type="Texture2D" uid="uid://dtdncmd6dus80" path="res://assets/sprites/world_tileset.png" id="1_36trf"]
-[ext_resource type="Script" uid="uid://dl170e64qmgkv" path="res://scripts/room_exit.gd" id="3_85yof"]
+[ext_resource type="Script" uid="uid://2n712y7h8uai" path="res://scripts/room.gd" id="1_85yof"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ffxv4"]
 texture = ExtResource("1_36trf")
@@ -28,15 +28,15 @@ sources/0 = SubResource("TileSetAtlasSource_ffxv4")
 
 [node name="Room" type="Node2D" groups=["movable", "room"]]
 scale = Vector2(2, 2)
+script = ExtResource("1_85yof")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 tile_set = SubResource("TileSet_85yof")
 
 [node name="Exit" type="Area2D" parent="."]
-script = ExtResource("3_85yof")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
 shape = SubResource("WorldBoundaryShape2D_ffxv4")
 disabled = true
 
-[connection signal="body_exited" from="Exit" to="Exit" method="_on_body_exited"]
+[connection signal="body_exited" from="Exit" to="." method="_on_exit_body_exited"]

@@ -1,14 +1,12 @@
 [gd_scene load_steps=5 format=3 uid="uid://b437jucdxy6r"]
 
-[ext_resource type="Script" uid="uid://cn2waig28ha5e" path="res://scripts/transition_manager.gd" id="1_lbhrr"]
+[ext_resource type="Script" uid="uid://cn2waig28ha5e" path="res://scripts/game.gd" id="1_iywne"]
 [ext_resource type="Script" uid="uid://hwjon4rioefk" path="res://scripts/room_manager.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://dhbu7qnljivln" path="res://scenes/floppy_disk.tscn" id="2_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://cf7cyhpvgjhy0" path="res://scenes/virus.tscn" id="4_lbhrr"]
 
 [node name="Game" type="Node2D"]
-
-[node name="TransitionManager" type="Node2D" parent="."]
-script = ExtResource("1_lbhrr")
+script = ExtResource("1_iywne")
 
 [node name="RoomManager" type="Node2D" parent="."]
 script = ExtResource("1_lnu2h")
@@ -18,4 +16,5 @@ position = Vector2(636, 272)
 
 [node name="Virus" parent="." instance=ExtResource("4_lbhrr")]
 
-[connection signal="next_level_ready" from="RoomManager" to="TransitionManager" method="_on_room_manager_next_level_ready"]
+[connection signal="transition_done" from="." to="RoomManager" method="_on_game_transition_done"]
+[connection signal="next_level_ready" from="RoomManager" to="." method="_on_room_manager_next_level_ready"]
