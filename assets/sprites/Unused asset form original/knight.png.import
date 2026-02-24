@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cfsd4p82x83g"
-path="res://.godot/imported/knight.png-7c67c83d34932624952797d9e971a644.ctex"
+path="res://.godot/imported/knight.png-d5e3e86c243292bc2217449c8546af40.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/knight.png"
-dest_files=["res://.godot/imported/knight.png-7c67c83d34932624952797d9e971a644.ctex"]
+source_file="res://assets/sprites/Unused asset form original/knight.png"
+dest_files=["res://.godot/imported/knight.png-d5e3e86c243292bc2217449c8546af40.ctex"]
 
 [params]
 
