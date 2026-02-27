@@ -1,0 +1,84 @@
+[gd_scene load_steps=12 format=3 uid="uid://dhbu7qnljivln"]
+
+[ext_resource type="Script" uid="uid://gphh24cjourv" path="res://entities/player/floppy_disk.gd" id="1_tv3j3"]
+[ext_resource type="Texture2D" uid="uid://s0swamji6wcm" path="res://assets/sprites/Floppy-disc-sprite.png" id="2_tv3j3"]
+[ext_resource type="AudioStream" uid="uid://oxtfakfyes5j" path="res://assets/sounds/sfx_wing.wav" id="3_ewsl7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ewsl7"]
+atlas = ExtResource("2_tv3j3")
+region = Rect2(0, 0, 1600, 1600)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_58nei"]
+atlas = ExtResource("2_tv3j3")
+region = Rect2(1600, 0, 1600, 1600)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a3pl0"]
+atlas = ExtResource("2_tv3j3")
+region = Rect2(3200, 0, 1600, 1600)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b7p4v"]
+atlas = ExtResource("2_tv3j3")
+region = Rect2(4800, 0, 1600, 1600)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gu111"]
+atlas = ExtResource("2_tv3j3")
+region = Rect2(6400, 0, 1600, 1600)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sawou"]
+atlas = ExtResource("2_tv3j3")
+region = Rect2(8000, 0, 1600, 1600)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qyigx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ewsl7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_58nei")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a3pl0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b7p4v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gu111")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sawou")
+}],
+"loop": true,
+"name": &"Flying",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gu111"]
+size = Vector2(9.5, 8.5)
+
+[node name="FloppyDisk" type="CharacterBody2D" groups=["movable", "player"]]
+scale = Vector2(2, 2)
+script = ExtResource("1_tv3j3")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0.50000006, -10.500001)
+scale = Vector2(0.021951541, 0.021494847)
+sprite_frames = SubResource("SpriteFrames_qyigx")
+animation = &"Flying"
+autoplay = "Flying"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.25, -9.75)
+shape = SubResource("RectangleShape2D_gu111")
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(0, -9)
+target_position = Vector2(-6, 0)
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(0, -9)
+target_position = Vector2(6, 0)
+
+[node name="FlappingSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_ewsl7")

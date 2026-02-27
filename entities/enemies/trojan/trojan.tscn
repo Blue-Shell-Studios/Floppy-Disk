@@ -1,0 +1,88 @@
+[gd_scene load_steps=15 format=3 uid="uid://bb5a5fwdt38df"]
+
+[ext_resource type="Texture2D" uid="uid://dv8t7fl64k3r4" path="res://assets/Knight_and_Horse/Gallop/Knight_gallop1.png" id="1_a60wx"]
+[ext_resource type="Script" uid="uid://ci4v35rtiennt" path="res://entities/enemies/trojan/trojan.gd" id="1_ckvt2"]
+[ext_resource type="PackedScene" uid="uid://bt7s62y8xpb5w" path="res://entities/utilities/killzone.tscn" id="1_m76x3"]
+[ext_resource type="Texture2D" uid="uid://drh0x1cjbjbgi" path="res://assets/Knight_and_Horse/Idle/Knight_idle1.png" id="1_vy1wc"]
+[ext_resource type="Texture2D" uid="uid://b8jde68yco8q2" path="res://assets/Knight_and_Horse/Gallop/Knight_gallop2.png" id="2_ckvt2"]
+[ext_resource type="Texture2D" uid="uid://bndirelncuv8j" path="res://assets/Knight_and_Horse/Idle/Knight_idle2.png" id="2_ivxe1"]
+[ext_resource type="Texture2D" uid="uid://cqcbqw1gxps7p" path="res://assets/Knight_and_Horse/Idle/Knight_idle3.png" id="3_0224m"]
+[ext_resource type="Texture2D" uid="uid://cafckysoarc3y" path="res://assets/Knight_and_Horse/Gallop/Knight_gallop3.png" id="3_hpkmp"]
+[ext_resource type="Texture2D" uid="uid://bggpmdw47dljt" path="res://assets/Knight_and_Horse/Gallop/Knight_gallop4.png" id="4_2a8uw"]
+[ext_resource type="Texture2D" uid="uid://dayaf22m2lxtv" path="res://assets/Knight_and_Horse/Idle/Knight_idle4.png" id="4_yc6ae"]
+[ext_resource type="Texture2D" uid="uid://ccu7ol8ejeobr" path="res://assets/Knight_and_Horse/Gallop/Knight_gallop5.png" id="5_3rb7b"]
+[ext_resource type="Texture2D" uid="uid://chccvj310rkt" path="res://assets/Knight_and_Horse/Idle/Knight_idle5.png" id="5_7kf1h"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_a60wx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_a60wx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_ckvt2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_hpkmp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_2a8uw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_3rb7b")
+}],
+"loop": true,
+"name": &"dashing",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_vy1wc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_ivxe1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_0224m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_yc6ae")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_7kf1h")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ckvt2"]
+size = Vector2(31, 19.5)
+
+[node name="Trojan" type="Node2D" groups=["enemy"]]
+scale = Vector2(2, 2)
+script = ExtResource("1_ckvt2")
+
+[node name="CooldownTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="DashTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -24)
+sprite_frames = SubResource("SpriteFrames_a60wx")
+animation = &"dashing"
+autoplay = "idle"
+frame_progress = 0.8494831
+
+[node name="Killzone" parent="." instance=ExtResource("1_m76x3")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
+position = Vector2(0, -11)
+shape = SubResource("RectangleShape2D_ckvt2")
+
+[connection signal="timeout" from="CooldownTimer" to="." method="_on_cooldown_timer_timeout"]
+[connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]

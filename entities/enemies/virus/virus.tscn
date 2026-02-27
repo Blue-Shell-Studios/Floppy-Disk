@@ -1,0 +1,62 @@
+[gd_scene load_steps=11 format=3 uid="uid://cf7cyhpvgjhy0"]
+
+[ext_resource type="Script" uid="uid://c4pbyips2bvdy" path="res://entities/enemies/virus/virus.gd" id="1_8wh0f"]
+[ext_resource type="Texture2D" uid="uid://c5n1pk0m6e12y" path="res://assets/sprites/slime_purple.png" id="2_0kg14"]
+[ext_resource type="AudioStream" uid="uid://dsegplmxfl5di" path="res://assets/sounds/sfx_hit.wav" id="3_0kg14"]
+[ext_resource type="PackedScene" uid="uid://bt7s62y8xpb5w" path="res://entities/utilities/killzone.tscn" id="4_7x3g4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m83q2"]
+atlas = ExtResource("2_0kg14")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jilg7"]
+atlas = ExtResource("2_0kg14")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1c2qo"]
+atlas = ExtResource("2_0kg14")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d31xg"]
+atlas = ExtResource("2_0kg14")
+region = Rect2(72, 24, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_x4wnb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m83q2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jilg7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1c2qo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d31xg")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jns7i"]
+size = Vector2(12, 11)
+
+[node name="Virus" type="Node2D" groups=["enemy"]]
+script = ExtResource("1_8wh0f")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -5.5)
+sprite_frames = SubResource("SpriteFrames_x4wnb")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="FloppyHitSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_0kg14")
+
+[node name="Killzone" parent="." instance=ExtResource("4_7x3g4")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
+shape = SubResource("RectangleShape2D_jns7i")

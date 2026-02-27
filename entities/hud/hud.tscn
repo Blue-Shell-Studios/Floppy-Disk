@@ -1,0 +1,98 @@
+[gd_scene load_steps=10 format=3 uid="uid://dj70lcu4dm2wb"]
+
+[ext_resource type="Script" uid="uid://54p5jpfg8f8d" path="res://entities/hud/hud.gd" id="1_8ya5m"]
+[ext_resource type="FontFile" uid="uid://js78wjypxcro" path="res://assets/fonts/PixelOperator8.ttf" id="1_pr3uw"]
+[ext_resource type="Texture2D" uid="uid://cst7wly2iny88" path="res://assets/title_card.png" id="3_43m1k"]
+[ext_resource type="FontFile" uid="uid://0q2tpaghfflr" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="4_bhfsx"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8ya5m"]
+font = ExtResource("1_pr3uw")
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_fcios"]
+font = ExtResource("4_bhfsx")
+font_size = 96
+outline_size = 32
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_bhfsx"]
+font = ExtResource("1_pr3uw")
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_ds3f6"]
+font = ExtResource("1_pr3uw")
+
+[sub_resource type="LabelSettings" id="LabelSettings_43m1k"]
+font = ExtResource("1_pr3uw")
+outline_color = Color(0, 0, 0, 1)
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_8ya5m")
+
+[node name="Details" type="MarginContainer" parent="."]
+visible = false
+offset_right = 1280.0
+offset_bottom = 65.0
+
+[node name="Score" type="Label" parent="Details"]
+visible = false
+layout_mode = 2
+text = "Lobby"
+label_settings = SubResource("LabelSettings_8ya5m")
+horizontal_alignment = 1
+
+[node name="GameOverScreen" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+
+[node name="GameOver" type="Label" parent="GameOverScreen"]
+layout_mode = 0
+offset_top = 272.0
+offset_right = 1280.0
+offset_bottom = 368.0
+text = "GAME OVER"
+label_settings = SubResource("LabelSettings_fcios")
+horizontal_alignment = 1
+
+[node name="LevelAchieved" type="Label" parent="GameOverScreen"]
+layout_mode = 0
+offset_top = 392.0
+offset_right = 1280.0
+offset_bottom = 408.0
+text = "You have reached level #!"
+label_settings = SubResource("LabelSettings_bhfsx")
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="ContinuePrompt" type="Label" parent="GameOverScreen"]
+layout_mode = 0
+offset_left = 486.0
+offset_top = 447.0
+offset_right = 814.0
+offset_bottom = 470.0
+text = "PRESS [SPACE] TO CONTINUE"
+label_settings = SubResource("LabelSettings_ds3f6")
+
+[node name="StartScreen" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TitleCard" type="TextureRect" parent="StartScreen"]
+layout_mode = 0
+offset_left = 367.0
+offset_top = 114.0
+offset_right = 918.0
+offset_bottom = 432.0
+texture = ExtResource("3_43m1k")
+
+[node name="StartPrompt" type="Label" parent="StartScreen"]
+layout_mode = 0
+offset_left = 502.0
+offset_top = 474.0
+offset_right = 792.0
+offset_bottom = 497.0
+text = "PRESS [SPACE] TO START"
+label_settings = SubResource("LabelSettings_43m1k")

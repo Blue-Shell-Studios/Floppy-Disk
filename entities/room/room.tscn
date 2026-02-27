@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3 uid="uid://c3xuv3iytwkw"]
+
+[ext_resource type="Texture2D" uid="uid://dtdncmd6dus80" path="res://assets/sprites/world_tileset.png" id="1_36trf"]
+[ext_resource type="Script" uid="uid://2n712y7h8uai" path="res://entities/room/room.gd" id="1_85yof"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ffxv4"]
+texture = ExtResource("1_36trf")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+7:3/0 = 0
+7:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+0:2/0 = 0
+0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:2/next_alternative_id = 2
+1:2/0 = 0
+1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:2/1 = 1
+
+[sub_resource type="TileSet" id="TileSet_85yof"]
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_ffxv4")
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ffxv4"]
+
+[node name="Room" type="Node2D" groups=["movable", "room"]]
+scale = Vector2(2, 2)
+script = ExtResource("1_85yof")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." groups=["block"]]
+tile_set = SubResource("TileSet_85yof")
+
+[node name="Exit" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+shape = SubResource("WorldBoundaryShape2D_ffxv4")
+disabled = true
+
+[connection signal="body_exited" from="Exit" to="." method="_on_exit_body_exited"]
