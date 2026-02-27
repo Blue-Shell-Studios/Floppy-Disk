@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://b437jucdxy6r"]
+
+[ext_resource type="Script" uid="uid://cn2waig28ha5e" path="res://core/managers/transition_manager.gd" id="1_lbhrr"]
+[ext_resource type="Script" uid="uid://hwjon4rioefk" path="res://core/managers/room_manager.gd" id="1_lnu2h"]
+[ext_resource type="Script" uid="uid://ddgppf36u8isw" path="res://core/main/game.gd" id="1_p57ef"]
+[ext_resource type="PackedScene" uid="uid://dhbu7qnljivln" path="res://entities/player/floppy_disk.tscn" id="2_lnu2h"]
+[ext_resource type="FontFile" uid="uid://js78wjypxcro" path="res://assets/fonts/PixelOperator8.ttf" id="6_p57ef"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_p57ef"]
+font = ExtResource("6_p57ef")
+font_size = 25
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_p57ef")
+
+[node name="TransitionManager" type="Node2D" parent="."]
+script = ExtResource("1_lbhrr")
+
+[node name="RoomManager" type="Node2D" parent="."]
+script = ExtResource("1_lnu2h")
+
+[node name="FloppyDisk" parent="." instance=ExtResource("2_lnu2h")]
+position = Vector2(636, 272)
+
+[node name="Score" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 583.0
+offset_top = 4.0
+offset_right = 671.0
+offset_bottom = 27.0
+grow_horizontal = 2
+text = "Lobby"
+label_settings = SubResource("LabelSettings_p57ef")
+horizontal_alignment = 1
+
+[connection signal="next_level_ready" from="RoomManager" to="TransitionManager" method="_on_room_manager_next_level_ready"]

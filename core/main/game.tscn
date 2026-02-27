@@ -1,0 +1,43 @@
+[gd_scene load_steps=9 format=3 uid="uid://b437jucdxy6r"]
+
+[ext_resource type="Script" uid="uid://cn2waig28ha5e" path="res://core/managers/transition_manager.gd" id="1_lbhrr"]
+[ext_resource type="Script" uid="uid://hwjon4rioefk" path="res://core/managers/room_manager.gd" id="1_lnu2h"]
+[ext_resource type="Script" uid="uid://ddgppf36u8isw" path="res://core/main/game.gd" id="1_p57ef"]
+[ext_resource type="PackedScene" uid="uid://dhbu7qnljivln" path="res://entities/player/floppy_disk.tscn" id="2_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://dj70lcu4dm2wb" path="res://entities/hud/hud.tscn" id="5_tsyvt"]
+[ext_resource type="Script" uid="uid://bfudvnfmkj74g" path="res://core/managers/audio_manager.gd" id="6_atr4h"]
+[ext_resource type="AudioStream" uid="uid://dauh6je1a1xtw" path="res://assets/sounds/coin.wav" id="6_wnj16"]
+[ext_resource type="AudioStream" uid="uid://bi3aihh6egamy" path="res://assets/sounds/hurt.wav" id="8_7go5q"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_p57ef")
+
+[node name="TransitionManager" type="Node2D" parent="."]
+script = ExtResource("1_lbhrr")
+
+[node name="RoomManager" type="Node2D" parent="."]
+script = ExtResource("1_lnu2h")
+
+[node name="FloppyDisk" parent="." instance=ExtResource("2_lnu2h")]
+position = Vector2(636, 272)
+
+[node name="HUD" parent="." instance=ExtResource("5_tsyvt")]
+
+[node name="AudioManager" type="Node2D" parent="."]
+script = ExtResource("6_atr4h")
+
+[node name="PickupBits" type="AudioStreamPlayer2D" parent="AudioManager"]
+stream = ExtResource("6_wnj16")
+
+[node name="PlayerDied" type="AudioStreamPlayer2D" parent="AudioManager"]
+stream = ExtResource("8_7go5q")
+
+[connection signal="game_over" from="." to="FloppyDisk" method="_on_game_game_over"]
+[connection signal="game_over" from="." to="HUD" method="_on_game_game_over"]
+[connection signal="game_over" from="." to="AudioManager" method="_on_game_game_over"]
+[connection signal="game_started" from="." to="RoomManager" method="_on_game_game_started"]
+[connection signal="game_started" from="." to="FloppyDisk" method="_on_game_game_started"]
+[connection signal="game_started" from="." to="HUD" method="_on_game_game_started"]
+[connection signal="level_cleared" from="RoomManager" to="." method="_on_room_manager_level_cleared"]
+[connection signal="level_cleared" from="RoomManager" to="HUD" method="_on_room_manager_level_cleared"]
+[connection signal="next_level_ready" from="RoomManager" to="TransitionManager" method="_on_room_manager_next_level_ready"]
