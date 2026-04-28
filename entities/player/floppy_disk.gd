@@ -19,26 +19,37 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-		
+
 	if ray_cast_left.is_colliding():
 		is_going_right = true
 	elif ray_cast_right.is_colliding():
 		is_going_right = false
-		
+
 	animated_sprite_2d.flip_h = not is_going_right
 
 	if Input.is_action_just_pressed("ui_accept"):
-		$FlappingSound.play()
-		velocity.y = JUMP_VELOCITY
+		_flap()
 
 	velocity.x = (1 if is_going_right else -1) * SPEED
 	animated_sprite_2d.rotation = (1 if is_going_right else -1) * (velocity.y / 1200) * (PI / 2.0)
 
 	move_and_slide()
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventScreenTouch and event.pressed:
+		_flap()
+		get_viewport().set_input_as_handled()
+	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		_flap()
+		get_viewport().set_input_as_handled()
+
+func _flap() -> void:
+	$FlappingSound.play()
+	velocity.y = JUMP_VELOCITY
+
 func _on_game_game_started() -> void:
 	process_mode = Node.PROCESS_MODE_INHERIT
-	
+
 	visible = true
 	running = true
 

@@ -61,10 +61,10 @@ vertical_alignment = 2
 
 [node name="ContinuePrompt" type="Label" parent="GameOverScreen"]
 layout_mode = 0
-offset_left = 390.0
+offset_left = 0.0
 offset_top = 447.0
-offset_right = 890.0
+offset_right = 1280.0
 offset_bottom = 500.0
-text = "PRESS [SPACE] TO RESTART\nPRESS [ESC] FOR MAIN MENU"
+text = "TAP OR PRESS [SPACE] TO RESTART\nPRESS [ESC] FOR MAIN MENU"
 label_settings = SubResource("LabelSettings_ds3f6")
 horizontal_alignment = 1
