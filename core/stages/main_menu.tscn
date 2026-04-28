@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://pqoujsv1dgtv" path="res://core/stages/main_menu.gd" id="1_menu"]
 [ext_resource type="Texture2D" uid="uid://cst7wly2iny88" path="res://assets/title_card.png" id="2_title"]
+[ext_resource type="PackedScene" path="res://core/background/binary_background.tscn" id="3_binary"]
 
 [node name="MainMenu" type="Control" unique_id=1003964562]
 layout_mode = 3
@@ -11,6 +12,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_menu")
+
+[node name="BinaryBackground" parent="." instance=ExtResource("3_binary")]
 
 [node name="Menu" type="VBoxContainer" parent="." unique_id=811966775]
 layout_mode = 1

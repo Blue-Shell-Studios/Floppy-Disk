@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c3xuv3iytwkw"]
 
-[ext_resource type="Texture2D" uid="uid://dtdncmd6dus80" path="res://assets/sprites/world_tileset.png" id="1_36trf"]
+[ext_resource type="Texture2D" path="res://assets/sprites/circuit_wall_tileset.png" id="1_36trf"]
 [ext_resource type="Script" uid="uid://2n712y7h8uai" path="res://entities/room/room.gd" id="1_85yof"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ffxv4"]

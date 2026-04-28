@@ -8,9 +8,12 @@
 [ext_resource type="Script" uid="uid://bfudvnfmkj74g" path="res://core/managers/audio_manager.gd" id="6_atr4h"]
 [ext_resource type="AudioStream" uid="uid://dauh6je1a1xtw" path="res://assets/sounds/coin.wav" id="6_wnj16"]
 [ext_resource type="AudioStream" uid="uid://bi3aihh6egamy" path="res://assets/sounds/hurt.wav" id="8_7go5q"]
+[ext_resource type="PackedScene" path="res://core/background/binary_background.tscn" id="9_binary"]
 
 [node name="Game" type="Node2D" unique_id=1939178862]
 script = ExtResource("1_p57ef")
+
+[node name="BinaryBackground" parent="." instance=ExtResource("9_binary")]
 
 [node name="TransitionManager" type="Node2D" parent="." unique_id=1740647566]
 script = ExtResource("1_lbhrr")
