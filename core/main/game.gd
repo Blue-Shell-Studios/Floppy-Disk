@@ -10,15 +10,24 @@ var level : int = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SignalBus.player_died.connect(_game_over)
+	call_deferred("_start_game")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if not running and Input.is_action_just_pressed("ui_accept"):
-		running = true
-		game_started.emit()
+	if not is_game_over:
+		return
 	
-	if is_game_over and Input.is_action_just_pressed("ui_accept"):
-		get_tree().reload_current_scene()
+	if Input.is_action_just_pressed("ui_accept"):
+		StageManager.change_stage(StageManager.GAME_STAGE)
+	elif Input.is_action_just_pressed("ui_cancel"):
+		StageManager.change_stage(StageManager.MAIN_MENU_STAGE)
+
+func _start_game() -> void:
+	if running:
+		return
+	
+	running = true
+	game_started.emit()
 
 func _game_over():
 	if is_game_over:

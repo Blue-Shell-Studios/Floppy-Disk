@@ -15,12 +15,13 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Floppy Disk"
-run/main_scene="uid://b437jucdxy6r"
+run/main_scene="res://core/main/main.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 
 [autoload]
 
 SignalBus="*res://common/bus/signal_bus.gd"
+StageManager="*res://core/managers/stage_manager.gd"
 
 [debug]
 

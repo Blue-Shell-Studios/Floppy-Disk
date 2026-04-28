@@ -1,43 +1,16 @@
 extends CanvasLayer
 
-const PADDING = 40
-
 @onready var details: MarginContainer = $Details
 @onready var score: Label = $Details/Score
 @onready var game_over_screen: Control = $GameOverScreen
 @onready var game_over: Label = $GameOverScreen/GameOver
 @onready var level_achieved: Label = $GameOverScreen/LevelAchieved
-@onready var start_screen: Control = $StartScreen
-@onready var title_card: TextureRect = $StartScreen/TitleCard
-@onready var start_prompt: Label = $StartScreen/StartPrompt
-
-
-var bounce_distance: float = 20.0
-var duration: float = 1.5
-
-func _ready() -> void:
-	var screen_size := GameConfig.get_screen_size(self)
-	
-	title_card.position = (screen_size - title_card.size) / 2.0
-	title_card.position.y = screen_size.y / 6.0
-	
-	start_prompt.position = (screen_size - start_prompt.size) / 2.0
-	start_prompt.position.y = title_card.position.y + title_card.size.y + PADDING
-	
-	_start_bounce()
-
-func _start_bounce() -> void:
-	var tween = create_tween().set_loops().set_trans(Tween.TRANS_SINE)
-	
-	tween.tween_property(title_card, "position:y", title_card.position.y - bounce_distance, duration)
-	tween.tween_property(title_card, "position:y", title_card.position.y, duration)
 
 func _on_room_manager_level_cleared(new_level: int) -> void:
 	score.text = "Level No.: " + str(new_level)
 
 
 func _on_game_game_started() -> void:
-	start_screen.visible = false
 	details.visible = true
 
 
