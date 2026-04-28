@@ -10,6 +10,10 @@ const MIN_COMPARTMENT_WIDTH = 4
 const VIRUS = preload("uid://cf7cyhpvgjhy0")
 const TROJAN = preload("uid://bb5a5fwdt38df")
 
+const TROJAN_COST := 1
+const VIRUS_COST := 2
+const MAX_ENCOUNTER_BUDGET := 4
+
 var new_room_size := Vector2i(25, 12)
 var new_compartment_num := 3
 
@@ -32,13 +36,8 @@ func _create_room(room_size: Vector2i, compartment_num: int, is_new_room = true,
 	var room_scene = ROOM.instantiate()
 	add_child(room_scene)
 	
-	var enemies := []
-	
-	for i in range(2, level, 5):
-		enemies.append(TROJAN)
-	
-	for i in range(5, level, 8):
-		enemies.append(VIRUS)
+	var difficulty_level := level + 1 if is_new_room else 0
+	var enemies := _build_enemy_encounter(difficulty_level)
 	
 	room_scene.setup(room_size, compartment_num, enemies, has_entrance)
 	room_scene.connect("player_exit", _on_player_exit)
@@ -51,6 +50,33 @@ func _create_room(room_size: Vector2i, compartment_num: int, is_new_room = true,
 		room_scene.position.y = (screen_size.y - room_size.y * GameConfig.TILE_SIZE) / 2.0
 		
 	return room_scene
+
+func _build_enemy_encounter(difficulty_level: int) -> Array:
+	if difficulty_level <= 2:
+		return []
+	
+	if difficulty_level <= 5:
+		return [TROJAN] if difficulty_level % 2 == 1 else []
+	
+	if difficulty_level <= 8:
+		return [VIRUS] if randi() % 4 == 0 else [TROJAN]
+	
+	var budget := mini(2 + floori((difficulty_level - 9) / 3.0), MAX_ENCOUNTER_BUDGET)
+	var enemies := []
+	
+	while budget > 0:
+		var can_afford_virus := budget >= VIRUS_COST
+		var prefers_virus := difficulty_level >= 10 and randi() % 3 == 0
+		
+		if can_afford_virus and prefers_virus:
+			enemies.append(VIRUS)
+			budget -= VIRUS_COST
+		else:
+			enemies.append(TROJAN)
+			budget -= TROJAN_COST
+	
+	enemies.shuffle()
+	return enemies
 
 func _generate_bits_inside_next_room(num: int) -> void:
 	var valid_coords: Array[Vector2i] = []

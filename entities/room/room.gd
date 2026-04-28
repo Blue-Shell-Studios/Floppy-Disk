@@ -5,11 +5,13 @@ signal player_exit
 const SOURCE_ID := 0
 const BARRIER_TILE := Vector2i(7,3)
 const EXIT_TILE := Vector2i(1,2)
+const ENTRANCE_SAFE_ROWS := 3
 
 @onready var tile_map_layer: TileMapLayer = $TileMapLayer
 @onready var exit_collision: CollisionShape2D = $Exit/CollisionShape2D
 
 var data : RoomData
+var enemies_summoned := false
 
 func setup(room_size: Vector2i, compartment_num: int, enemies: Array = [], has_entrance: bool = true) -> void:
 	data = RoomData.new(room_size, compartment_num, enemies, has_entrance)
@@ -49,9 +51,23 @@ func _configure_exit_trigger() -> void:
 	exit_collision.set_deferred("disabled", true)
 
 func summon_enemies():
-	for enemy in data.enemies:
+	if enemies_summoned:
+		return
+	
+	enemies_summoned = true
+	call_deferred("_summon_enemies_deferred")
+
+func _summon_enemies_deferred() -> void:
+	var spawn_tiles := _get_enemy_spawn_tiles()
+	spawn_tiles.shuffle()
+	
+	var spawn_count := mini(data.enemies.size(), spawn_tiles.size())
+	for i in range(spawn_count):
+		var enemy = data.enemies[i]
 		var enemy_scene = enemy.instantiate()
+		
 		add_child(enemy_scene)
+		enemy_scene.position = tile_map_layer.map_to_local(spawn_tiles[i])
 
 func open() -> void:
 	exit_collision.set_deferred("disabled", false)
@@ -66,3 +82,23 @@ func _on_exit_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		player_exit.emit()
 		queue_free()
+
+func _get_enemy_spawn_tiles() -> Array[Vector2i]:
+	var spawn_tiles: Array[Vector2i] = []
+	var fallback_tiles: Array[Vector2i] = []
+	
+	for x in range(1, data.room_size.x - 1):
+		for y in range(1, data.room_size.y - 1):
+			var tile_pos := Vector2i(x, y)
+			if tile_pos in data.barrier_tiles or tile_pos in data.exit_tiles or tile_pos in data.entrance_tiles:
+				continue
+			
+			fallback_tiles.append(tile_pos)
+			
+			if y < data.room_size.y - ENTRANCE_SAFE_ROWS:
+				spawn_tiles.append(tile_pos)
+	
+	if spawn_tiles.is_empty():
+		return fallback_tiles
+	
+	return spawn_tiles
