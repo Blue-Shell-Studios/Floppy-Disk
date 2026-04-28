@@ -21,6 +21,9 @@ func _process(delta: float) -> void:
 		get_tree().reload_current_scene()
 
 func _game_over():
+	if is_game_over:
+		return
+	
 	is_game_over = true
 	game_over.emit(level)
 
