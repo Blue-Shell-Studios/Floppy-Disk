@@ -13,10 +13,6 @@ func _ready() -> void:
 	play_button.focus_entered.connect(_on_button_focused.bind(0))
 	exit_button.focus_entered.connect(_on_button_focused.bind(1))
 
-	if OS.has_feature("web"):
-		exit_button.hide()
-		buttons = [play_button]
-
 	_focus_button(0)
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -46,7 +42,4 @@ func _on_play_pressed() -> void:
 	StageManager.change_stage(StageManager.GAME_STAGE)
 
 func _on_exit_pressed() -> void:
-	if OS.has_feature("web"):
-		return
-
 	StageManager.quit_game()
